@@ -15,12 +15,11 @@ builder_commit="$(git rev-parse HEAD)"
 
 # Build LLVM
 ./build-llvm.py \
-	--clang-vendor "ZpyChain" \
-	--projects "clang;clang-tools-extra;compiler-rt;lld;libcxxabi;libcxx;openmp;polly" \
+	--clang-vendor "Irish" \
 	--targets "ARM;AArch64;X86" \
-	--defines "LLVM_PARALLEL_COMPILE_JOBS=$(nproc) LLVM_PARALLEL_LINK_JOBS=$(nproc) CMAKE_C_FLAGS=-O3 -Wno-macro-redefined -pipe -pthread -fopenmp -g0 -march=native -mtune=native CMAKE_CXX_FLAGS=-O3 -Wno-macro-redefined -pipe -pthread -fopenmp -g0 -march=native -mtune=native LLVM_BUILD_RUNTIME=ON LLVM_TOOL_OPENMP_BUILD=ON LINK_POLLY_INTO_TOOLS=ON LLVM_ENABLE_LIBCXX=ON LLVM_ENABLE_PIC=ON LLVM_ENABLE_THREADS=ON LLVM_USE_NEWPM=ON LLVM_OPTIMIZED_TABLEGEN=ON LLVM_ENABLE_LLD=ON LLVM_USE_LINKER=lld COMPILER_RT_BUILD_LIBFUZZER=ON LIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON" \
+	--defines "LLVM_PARALLEL_COMPILE_JOBS=$(nproc) LLVM_PARALLEL_LINK_JOBS=$(nproc) CMAKE_C_FLAGS=-O3 CMAKE_CXX_FLAGS=-O3 LLVM_USE_LINKER=lld LLVM_ENABLE_LLD=ON" \
 	--pgo kernel-defconfig \
-	--lto full \
+	--lto thin \
 	--shallow-clone 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.
